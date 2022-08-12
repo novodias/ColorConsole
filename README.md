@@ -41,9 +41,9 @@ struct Person
 
 var persons = new Person[3] 
 { 
-    new Person("Fulano", "32", "Blue"),
-    new Person("Ciclano", "46", "Red"),
-    new Person("Sicrano", "23", "Green")
+    new Person("Fulano", 32, "Blue"),
+    new Person("Ciclano", 46, "Red"),
+    new Person("Sicrano", 23, "Green")
 };
 
 Person p;
