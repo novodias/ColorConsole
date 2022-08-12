@@ -60,7 +60,7 @@ static HttpClient Client = new();
 using var response = await Client.SendAsync(HttpMethod.Get, "url/to/file")
 response.EnsureSuccessStatusCode();
 
-using var source = response.Content.ReadAsStreamAsync();
+using var source = await response.Content.ReadAsStreamAsync();
 using var destination = File.Create("path/to/file");
 
 // Still very early, the plan is to automate this part.
@@ -72,5 +72,5 @@ if (source.Length.HasValue)
     await source.CopyToAsyncWithProgress(destination, progressInfo);
 }
 else
-    source.CopyToAsync(destination);
+    await source.CopyToAsync(destination);
 ```
