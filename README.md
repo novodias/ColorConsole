@@ -55,7 +55,7 @@ p = CConsole.Select<Person>("Select a perosn", persons);
 ``` C#
 using ColorConsole;
 
-static HttpClient Client = new();
+HttpClient Client = new();
 
 using var response = await Client.SendAsync(HttpMethod.Get, "url/to/file")
 response.EnsureSuccessStatusCode();
