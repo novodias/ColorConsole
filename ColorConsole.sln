@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorConsole", "ColorConsole\ColorConsole.csproj", "{B551F52D-AC55-48A6-BEC8-9FF18E06E291}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorConsole.Test", "ColorConsole.Test\ColorConsole.Test.csproj", "{4409DF7C-AB13-430F-8E57-AF64F81ADB69}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B551F52D-AC55-48A6-BEC8-9FF18E06E291}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B551F52D-AC55-48A6-BEC8-9FF18E06E291}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B551F52D-AC55-48A6-BEC8-9FF18E06E291}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B551F52D-AC55-48A6-BEC8-9FF18E06E291}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4409DF7C-AB13-430F-8E57-AF64F81ADB69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4409DF7C-AB13-430F-8E57-AF64F81ADB69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4409DF7C-AB13-430F-8E57-AF64F81ADB69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4409DF7C-AB13-430F-8E57-AF64F81ADB69}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

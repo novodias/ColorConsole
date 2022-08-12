@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace ColorConsole
 {
     public static partial class CConsole

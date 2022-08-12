@@ -1,3 +1,8 @@
+using System;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+
 namespace ColorConsole
 {
     public static class ProgressStream
@@ -15,7 +20,7 @@ namespace ColorConsole
 
             var buffer = new byte[81920];
             int bytesRead;
-            while ((bytesRead = source.Read(buffer)) != 0) 
+            while ((bytesRead = source.Read(buffer, 0, buffer.Length)) != 0) 
             {
                 destination.Write(buffer, 0, bytesRead);
 
@@ -36,9 +41,9 @@ namespace ColorConsole
 
             var buffer = new byte[81920];
             int bytesRead;
-            while ((bytesRead = await source.ReadAsync(buffer, cancellationToken).ConfigureAwait(false)) != 0) 
+            while ((bytesRead = await source.ReadAsync(buffer, 0, buffer.Length, cancellationToken).ConfigureAwait(false)) != 0) 
             {
-                await destination.WriteAsync(buffer.AsMemory(0, bytesRead), cancellationToken).ConfigureAwait(false);
+                await destination.WriteAsync(buffer, 0, bytesRead, cancellationToken).ConfigureAwait(false);
 
                 info = Progress.Report(info, destination.Length);
             }

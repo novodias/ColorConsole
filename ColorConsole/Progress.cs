@@ -1,3 +1,5 @@
+using System;
+
 namespace ColorConsole
 {
     public static class Progress
@@ -25,7 +27,7 @@ namespace ColorConsole
         private static void WriteColor(string progress, int percentage, ProgressInfo info)
         {
             var now = DateTime.Now.TimeOfDay;
-            var consolePosition = Console.GetCursorPosition();
+            var consolePosition = (Console.CursorLeft, Console.CursorTop);
 
             lock (_progressLock)
             {

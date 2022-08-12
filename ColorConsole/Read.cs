@@ -1,3 +1,9 @@
+using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Dynamic;
+using Microsoft.CSharp.RuntimeBinder;
+
 namespace ColorConsole
 {
     public static partial class CConsole

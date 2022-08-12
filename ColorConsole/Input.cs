@@ -1,4 +1,8 @@
+using System;
+using System.IO;
+using System.Linq;
 using System.Text;
+using System.Collections.Generic;
 
 namespace ColorConsole
 {
@@ -96,8 +100,10 @@ namespace ColorConsole
             else
             {
                 var informations = internals.Select(ctx => ctx.Information);
-                string selection = new StringBuilder()
-                    .AppendJoin("\n", informations).ToString();
+                var selection = new StringBuilder();
+
+                foreach (var line in informations)
+                    selection.AppendLine(line);
 
                 var numbers = internals.Select(ctx => ctx.Number);
                 
