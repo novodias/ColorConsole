@@ -6,11 +6,31 @@
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <OutputType>Library</OutputType>
     <Version>0.1.0</Version>
+    <Optimize>True</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>Novodias.ColorConsole</PackageId>
+    <Authors>Nilson Dias Bessa</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/novodias/ColorConsole</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/novodias/ColorConsole</RepositoryUrl>
+    <Description>Quick and easy way to get input in console applications</Description>
+    <RepositoryType>Git</RepositoryType>
   </PropertyGroup>
 
   <PropertyGroup>
     <LangVersion>10.0</LangVersion>
     <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <Optimize>False</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <Optimize>True</Optimize>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
