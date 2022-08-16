@@ -60,6 +60,13 @@ internal static class Out
                     Console.BackgroundColor = _searchColor[bg];
                     Console.ForegroundColor = _searchColor[colorString];
                 }
+                else if (colorString.Contains("c ") && !colorString.Contains(','))
+                {
+                    colorString = colorString.Remove(0, "c ".Length);
+                    colorString = colorString.Trim();
+
+                    Console.BackgroundColor = _searchColor[colorString];
+                }
                 else
                     Console.ForegroundColor = _searchColor[colorString];
                 
