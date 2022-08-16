@@ -1,96 +1,111 @@
-using System;
-using System.Collections.Generic;
+using ColorConsole.Internal;
 
 namespace ColorConsole
 {
     public static partial class CConsole
     {
-        private static readonly Dictionary<string, ConsoleColor> _searchColor = new()
+        public static Point2D GetCursor
         {
-            { "black", ConsoleColor.Black },
-            { "blue", ConsoleColor.Blue },
-            { "cyan", ConsoleColor.Cyan },
-            { "darkblue", ConsoleColor.DarkBlue },
-            { "darkcyan", ConsoleColor.DarkCyan },
-            { "darkgray", ConsoleColor.DarkGray },
-            { "darkgreen", ConsoleColor.DarkGreen },
-            { "darkmagenta", ConsoleColor.DarkMagenta },
-            { "darkred", ConsoleColor.DarkRed },
-            { "darkyellow", ConsoleColor.DarkYellow },
-            { "gray", ConsoleColor.Gray },
-            { "green", ConsoleColor.Green },
-            { "magenta", ConsoleColor.Magenta },
-            { "red", ConsoleColor.Red },
-            { "white", ConsoleColor.White },
-            { "yellow", ConsoleColor.Yellow },
-        };
+            get => (Console.CursorLeft, Console.CursorTop);
+        }
 
-        public static void Write(string message)
+        public static void SetCursor(int x, int y)
         {
-            bool shouldWrite = true;
-            string colorString = string.Empty;
+            Console.CursorLeft = x;
+            Console.CursorTop = y;
+        }
 
-            for (int i = 0; i < message.Length; i++)
+        public static void SetCursor(Point2D point)
+        {
+            Console.CursorLeft = point.X;
+            Console.CursorTop = point.Y;
+        }
+
+        public static void TurnOnCursor()
+            => Console.CursorVisible = true;
+
+        public static void TurnOffCursor()
+            => Console.CursorVisible = false;
+
+        /// <summary>
+        /// Verifies if the console has enough space to write.
+        /// If not, it prints newlines and returns the cursor
+        /// in the previous position
+        /// </summary>
+        /// <param name="amount">Amount that needs to be printed on the console. Default = 1</param>
+        /// <returns>Point2D</returns>
+        public static Point2D SetUpCursor(int amount = 1)
+        {
+            var cursor = GetCursor;
+            var limit = Console.WindowHeight;
+
+            if (cursor.X != 0)
+                cursor.X = 0;
+
+            var sum = cursor.Y + amount;
+            if (sum >= limit)
             {
-                var ch = message[i];
+                var offset = sum - limit;
 
-                // Ao encontrar o '[', vai desativar o shouldWrite e não escrever o char
-                // e vai formar a cor que foi digitada
-                if (ch.Equals('['))
-                {
-                    shouldWrite = false;
-                    // colorString += ch;
-                }
-                else if (ch.Equals(']'))
-                {
-                    shouldWrite = true;
+                for (int i = 0; i < offset; i++)
+                    Console.Write(Environment.NewLine);
 
-                    if (colorString.Contains("console "))
-                    {
-                        colorString = colorString.Remove(0, "console ".Length);
-                        Console.BackgroundColor = _searchColor[colorString];
-                    }
-                    else
-                        Console.ForegroundColor = _searchColor[colorString];
-                    
-                    colorString = string.Empty;
-                }
-                // Caso encontre o '&', escreve a próxima letra e então pula ela no for loop
-                else if (ch.Equals('&'))
-                {
-                    Console.Write(message[i + 1]);
-                    i++;
-                }
-                else if ( !shouldWrite && !ch.Equals(']') )
-                    colorString += ch;
-                else if (ch.Equals(';'))
-                {
-                    Console.ForegroundColor = ConsoleColor.White;
-
-                    if ( !(i + 1 == message.Length) )
-                        if (message[i + 1] == 'C')
-                        {
-                            Console.BackgroundColor = ConsoleColor.Black;
-                            i++;
-                        }
-
-                    // Console.ResetColor();
-                }
-                else if ( shouldWrite )
-                    Console.Write(ch);
+                cursor.Y -= offset;
             }
 
-            Console.ResetColor();
+            return cursor;
         }
+
+        public static IEnumerable<Point2D> GetLines(int amount)
+        {
+            Point2D[] positions = new Point2D[amount];
+            Point2D cursor = GetCursor;
+            var limit = Console.WindowHeight;
+
+            if (cursor.X != 0)
+                cursor.X = 0;
+
+            var sum = cursor.Y + amount;
+            if (sum < limit)
+            {
+                for (int i = 0; i < amount; i++)
+                {
+                    positions[i] = cursor;
+                    cursor.Y++;
+                }
+            }
+            else if (sum >= limit)
+            {
+                var offset = sum - limit;
+
+                for (int i = 0; i < amount; i++)
+                {
+                    var y = cursor.Y - offset + i;
+                    
+                    if ( i < offset )
+                        Console.Write(Environment.NewLine);
+
+                    positions[i] = (cursor.X, y);
+                }
+            }
+
+            return positions;
+        }
+
+        public static void Write(string message)
+            => Out.Write(message);
+
+        public static void Write(string message, params object[] args)
+            => Out.Write(message, args);
 
         public static void WriteLine()
-            => Console.Write("\n");
+            => Out.Write(Environment.NewLine);
 
         public static void WriteLine(string message)
-        {
-            Write(message);
-            Console.Write("\n");
-        }
+            => Out.WriteLine(message);
+
+        public static void WriteLine(string message, params object[] args)
+            => Out.WriteLine(message, args);
 
         /// <summary>
         /// Se apertar Y ou Enter, retorna true

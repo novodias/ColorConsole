@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using ColorConsole.Internal;
 
 namespace ColorConsole
 {
@@ -12,7 +12,7 @@ namespace ColorConsole
         /// <param name="message">Mensagem da seleção</param>
         /// <param name="choices">Enumerado com os valores</param>
         /// <returns>Number</returns>
-        public static int SelectNumber<T>(string message, IEnumerable<T> choices)
+        public static int SelectNumber<T>(string message, IReadOnlyList<T> choices)
         {
             return Input.InternalSelect(message, choices).Number;
         }
@@ -25,7 +25,7 @@ namespace ColorConsole
         /// <param name="message">Mensagem da seleção</param>
         /// <param name="choices">Enumerado com os valores</param>
         /// <returns>Value</returns>
-        public static T Select<T>(string message, IEnumerable<T> choices)
+        public static T Select<T>(string message, IReadOnlyList<T> choices)
         {
             return Input.InternalSelect(message, choices).Value;
         }
@@ -38,7 +38,12 @@ namespace ColorConsole
         /// <param name="message">Mensagem da seleção</param>
         /// <param name="choices">Enumerado com os valores</param>
         /// <returns>Number</returns>
-        public static int SelectableNumber<T>(string message, IEnumerable<T> choices)
+        public static int SelectableNumber<T>(string message, IReadOnlyList<T> choices)
+        {
+            return Input.InternalSelect(message, choices, null, true).Number;
+        }
+
+        public static int SelectableNumber<T>(string message, params T[] choices)
         {
             return Input.InternalSelect(message, choices, null, true).Number;
         }
@@ -51,7 +56,12 @@ namespace ColorConsole
         /// <param name="message">Mensagem da seleção</param>
         /// <param name="choices">Enumerado com os valores</param>
         /// <returns>Value</returns>
-        public static T Selectable<T>(string message, IEnumerable<T> choices)
+        public static T Selectable<T>(string message, IReadOnlyList<T> choices)
+        {
+            return Input.InternalSelect(message, choices, null, true).Value;
+        }
+
+        public static T Selectable<T>(string message, params T[] choices)
         {
             return Input.InternalSelect(message, choices, null, true).Value;
         }
