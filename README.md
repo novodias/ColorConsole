@@ -6,12 +6,13 @@
 ``` C#
 using ColorConsole;
 
-// The '[', ']', ';' and '&' are ignored, to write them to the console,
-// add before the char you wish to write a '&'.
-// Example: "&& &[ &] &;"
+// Chars '[', ']', ';' and '&' are ignored. 
 
 // The char ';' tells to reset the color to the default,
 // add a 'C' to reset the background and the foreground.
+
+// To write them to the console, add before the char a ampersand ('&')
+// Example: "&& &[ &] &;"
 
 string text = 
 "[green]This text is green;\n" +
@@ -25,7 +26,6 @@ CConsole.WriteLine(text);
 ### Selecting a value from an array
 ``` C#
 using ColorConsole;
-using ColorConsole.Extensions;
 
 struct Person 
 {
@@ -48,16 +48,29 @@ var persons = new Person[3]
     new Person("Sicrano", 23, "Green")
 };
 
+int n;
 Person p;
+
+// Uses the arrow key to select the 'person'
 p = CConsole.Selectable<Person>("Select a person", persons);
+
+// Queues the list by number, user inputs the number and returns the 'person'
 p = CConsole.Select<Person>("Select a person", persons);
+
+// Returns the selected number
+n = CConsole.SelectableNumber("Select a option", 
+"Change name",
+"Change age",
+"Change favorite color");
+// ...
 ```
 
-### Show download progress
+### Show progress
 ``` C#
 using ColorConsole;
+using ColorConsole.Extensions;
 
-...
+// ...
 var source = await response.Content.ReadAsStreamAsync();
 var destination = File.Create("path/to/file");
 
