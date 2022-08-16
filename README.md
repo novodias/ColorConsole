@@ -15,7 +15,8 @@ using ColorConsole;
 
 string text = 
 "[green]This text is green;\n" +
-"[console blue][black]This text is black and the background is blue;C"
+"[c red]The background is red;\n" +
+"[c blue, black]The background is blue and this text is black;C";
 
 CConsole.Write(text + "\n");
 CConsole.WriteLine(text);
@@ -24,6 +25,7 @@ CConsole.WriteLine(text);
 ### Selecting a value from an array
 ``` C#
 using ColorConsole;
+using ColorConsole.Extensions;
 
 struct Person 
 {
@@ -48,27 +50,21 @@ var persons = new Person[3]
 
 Person p;
 p = CConsole.Selectable<Person>("Select a person", persons);
-p = CConsole.Select<Person>("Select a perosn", persons);
+p = CConsole.Select<Person>("Select a person", persons);
 ```
 
 ### Show download progress
 ``` C#
 using ColorConsole;
 
-HttpClient Client = new();
+...
+var source = await response.Content.ReadAsStreamAsync();
+var destination = File.Create("path/to/file");
 
-using var response = await Client.SendAsync(HttpMethod.Get, "url/to/file")
-response.EnsureSuccessStatusCode();
-
-using var source = await response.Content.ReadAsStreamAsync();
-using var destination = File.Create("path/to/file");
-
-// Still very early, the plan is to automate this part.
 if (source.Length.HasValue)
 {
-    var cursor = Console.GetCursorPosition();
     var length = source.Length.Value;
-    var progressInfo = new ProgressInfo(cursor, length, "Downloading");
+    var progressInfo = new ProgressInfo(length, "Downloading");
     await source.CopyToAsyncWithProgress(destination, progressInfo);
 }
 else
