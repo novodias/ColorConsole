@@ -29,8 +29,8 @@ internal static class In
 
         while (!resume)
         {
-            result = Console.ReadLine();
-            resume = result != null;
+            result = Console.ReadLine() ?? string.Empty;
+            resume = result != string.Empty;
 
             if (!resume)
             {
@@ -55,14 +55,14 @@ internal static class In
 
         while (!resume)
         {
-            result = Console.ReadLine();
+            result = Console.ReadLine() ?? string.Empty;
 
-            if (result != null && !condition.Invoke(result))
+            if (result != string.Empty && !condition.Invoke(result))
             {
                 ClearLine(cursor);
                 Show(message, sameline, conditionerror);
             }
-            else if (result == null)
+            else if (result == string.Empty)
             {
                 ClearLine(cursor);
                 Show(message, sameline, error);
