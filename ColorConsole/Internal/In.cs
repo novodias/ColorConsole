@@ -78,15 +78,13 @@ internal static class In
 
     internal static T ReadNumber<T>(string message, bool sameline = false, string? error = null)
     {
-        bool isDefault = false;
+        bool parsed = false;
         T? number = default;
 
-        while (!isDefault)
+        while (!parsed)
         {
             var unparsed = Read(message, sameline, error);
-            number = Input.InternalTryParse<T>(unparsed);
-
-            isDefault = number != null;
+            parsed = Input.InternalTryParse<T>(unparsed, out number);
         }
 
         _ = number ?? throw new NullReferenceException(nameof(number));

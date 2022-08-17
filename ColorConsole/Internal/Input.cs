@@ -76,30 +76,33 @@ internal static class Input
         }
     }
 
-    internal static T? InternalTryParse<T>(string unparsed)
+    internal static bool InternalTryParse<T>(string unparsed, out T? result)
     {
-        var parsed = default(T);
         var type = typeof(T);
 
         if (!_numericTypes.Any(t => t.Equals(type)))
-            throw new Exception("Type inserido não é um número");
+            throw new Exception("Type inserted is not a number");
 
         var method = type.GetMethods()
-            .Where(m => m.Name == "Parse")
+            .Where(m => m.Name == "TryParse")
             .FirstOrDefault(x => x.IsStatic);
 
-        #pragma warning disable
-        try
-        {
-            parsed = (T)method.Invoke(obj: null, parameters: new object[] { unparsed })
-                ?? throw new NullReferenceException("parsed");
-        }
-        catch (System.Exception)
-        {
-            parsed = default(T);
-        }
-        #pragma warning restore
+#pragma warning disable
+        var parameters = new object[] { unparsed, null };
+        var success = (bool)method.Invoke(null, parameters);
 
-        return parsed;
+        if (success)
+            result = (T)parameters[1];
+        else
+            result = default;
+#pragma warning restore
+
+        // var method = type.GetMethods()
+        //     .Where(m => m.Name == "Parse")
+        //     .FirstOrDefault(x => x.IsStatic);
+
+        // result = (T)method.Invoke(obj: null, parameters: new object[] { unparsed });
+
+        return success;
     }
 }
