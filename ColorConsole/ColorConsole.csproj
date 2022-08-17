@@ -5,8 +5,14 @@
     <RootNamespace>ColorConsole</RootNamespace>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <OutputType>Library</OutputType>
-    <Version>0.1.0</Version>
     <ImplicitUsings>true</ImplicitUsings>
+    <VersionPrefix>0.2</VersionPrefix>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <LangVersion>10.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <Optimize>True</Optimize>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -15,22 +21,30 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/novodias/ColorConsole</PackageProjectUrl>
     <RepositoryUrl>https://github.com/novodias/ColorConsole</RepositoryUrl>
-    <Description>Quick and easy way to get input in console applications</Description>
+    <Description>Quick and easy way to write and get input in console applications</Description>
     <RepositoryType>Git</RepositoryType>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <LangVersion>10.0</LangVersion>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <Optimize>False</Optimize>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-    <Optimize>True</Optimize>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+  <PropertyGroup Condition=" '$(VersionSuffix)' != '' And '$(BuildNumber)' != ''">
+    <Version>$(VersionPrefix)-$(VersionSuffix)-$(BuildNumber)</Version>
+    <AssemblyVersion>$(VersionPrefix)-$(BuildNumber)</AssemblyVersion>
+    <FileVersion>$(VersionPrefix)-$(BuildNumber)</FileVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(VersionSuffix)' != '' And '$(BuildNumber)' == ''">
+    <Version>$(VersionPrefix)-$(VersionSuffix)</Version>
+    <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
+    <FileVersion>$(VersionPrefix)</FileVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(VersionSuffix)' == ''">
+    <Version>$(VersionPrefix)</Version>
+    <AssemblyVersion>$(VersionPrefix).0</AssemblyVersion>
+    <FileVersion>$(VersionPrefix).0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

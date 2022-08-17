@@ -4,6 +4,7 @@ using ColorConsole.Extensions;
 
 string[] options =
 {
+    "Test",
     "Progress Test",
     "Progress Chrome Download Test",
     "List Progress",
@@ -20,22 +21,98 @@ while (!exit)
     switch (n)
     {
         case 1:
-            ProgressTest();
+            Test();
             break;
         case 2:
-            await ProgressChromeTest();
+            ProgressTest();
             break;
         case 3:
-            ListProgressTest();
+            await ProgressChromeTest();
             break;
         case 4:
+            ListProgressTest();
+            break;
+        case 5:
             for (int i = 0; i < Console.WindowHeight; i++)
                 Console.Write(Environment.NewLine);
             break;
-        case 5:
+        case 6:
             exit = true;
             break;
     }
+}
+
+static void Test()
+{
+    CConsole.Write("WRITE TEST ");
+    CConsole.Write("[red]WRITE RED TEST; ");
+    CConsole.Write("[c blue]WRITE BG BLUE TEST;C ");
+    CConsole.Write("[c white, red]WRITE BG WHITE AND TEXT RED TEST;C");
+    Console.WriteLine();
+
+    Console.WriteLine();
+
+    CConsole.WriteLine("WRITELINE TEST ");
+    CConsole.WriteLine("[red]WRITELINE RED TEST; ");
+    CConsole.WriteLine("[c blue]WRITELINE BG BLUE TEST;C ");
+    CConsole.WriteLine("[c white, red]WRITELINE BG WHITE AND TEXT RED TEST;C");
+    Console.WriteLine();
+
+    Console.WriteLine();
+
+    var read = CConsole.Read("READ TEST: ");
+    CConsole.WriteLine(read);
+    Console.WriteLine();
+
+    read = CConsole.Read("READ TEST SAMELINE: ", true);
+    CConsole.WriteLine(read);
+    Console.WriteLine();
+
+    read = CConsole.Read("READ TEST SAMELINE ERROR: ", true, "TEXT IS EMPTY");
+    CConsole.WriteLine(read);
+
+    Console.WriteLine();
+    Console.WriteLine();
+
+    var readNumber = CConsole.ReadNumber<int>("READNUMBER TEST: ");
+    CConsole.WriteLine(readNumber.ToString());
+    Console.WriteLine();
+
+    readNumber = CConsole.ReadNumber<int>("READNUMBER TEST SAMELINE: ", true);
+    CConsole.WriteLine(readNumber.ToString());
+    Console.WriteLine();
+
+    readNumber = CConsole.ReadNumber<int>("READNUMBER TEST SAMELINE ERROR: ", true, "NOT A NUMBER");
+    CConsole.WriteLine(readNumber.ToString());
+    Console.WriteLine();
+
+    Console.WriteLine();
+
+    int[] array = { 1, 3, 5 };
+
+    var readNumberArr = CConsole.ReadNumber("READNUMBER ARRAY TEST (1 3 5): ", array);
+    CConsole.WriteLine(readNumberArr.ToString());
+    Console.WriteLine();
+
+    readNumberArr = CConsole.ReadNumber("READNUMBER ARRAY TEST SAMELINE (1 3 5): ", array, true);
+    CConsole.WriteLine(readNumberArr.ToString());
+    Console.WriteLine();
+
+    readNumberArr = CConsole.ReadNumber("READNUMBER ARRAY TEST SAMELINE ERROR (1 3 5): ", array, true, "NUMBER NOT IN THE ARRAY");
+    CConsole.WriteLine(readNumberArr.ToString());
+    Console.WriteLine();
+
+    Console.WriteLine();
+
+    (int min, int max) between = (1, 10);
+
+    var readNumberBetween = CConsole.ReadNumber("READNUMBER BETWEEN TEST (1, 10): ", between);
+    CConsole.WriteLine(readNumberBetween.ToString());
+    Console.WriteLine();
+
+    readNumberBetween = CConsole.ReadNumber("READNUMBER BETWEEN TEST SAMELINE (1, 10): ", between, true);
+    CConsole.WriteLine(readNumberBetween.ToString());
+    Console.WriteLine();
 }
 
 static void ProgressTest()
@@ -90,7 +167,10 @@ static async Task ProgressChromeTest()
 
 static void ListProgressTest()
 {
-    var n = CConsole.SelectableNumber("TESTS LIST PROGRESS:", "NO PARAMETER AMOUNT", "WITH PARAMETER AMOUNT", "GET LINES TEST");
+    var n = CConsole.SelectableNumber("TESTS LIST PROGRESS:", 
+    "NO PARAMETER AMOUNT", 
+    "WITH PARAMETER AMOUNT", 
+    "GET LINES TEST");
 
     CConsole.TurnOffCursor();
 
