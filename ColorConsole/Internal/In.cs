@@ -81,7 +81,7 @@ internal static class In
         bool isDefault = false;
         T? number = default;
 
-        while (isDefault)
+        while (!isDefault)
         {
             var unparsed = Read(message, sameline, error);
             number = Input.InternalTryParse<T>(unparsed);
