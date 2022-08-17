@@ -30,7 +30,7 @@ namespace ColorConsole
                 any = range.Contains(parsed);
 
                 if (!any && errormessage is not null)
-                    Write(errormessage);
+                    WriteLine(errormessage);
             }
 
             _ = parsed ?? throw new NullReferenceException(nameof(parsed));
