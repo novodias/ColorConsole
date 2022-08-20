@@ -26,6 +26,10 @@ namespace ColorConsole
             Console.CursorTop = y;
         }
 
+        public static void SetCursorLeft(int left) => Console.CursorLeft = left;
+
+        public static void SetCursorTop(int top) => Console.CursorTop = top;
+
         public static void SetCursor(Point2D point)
         {
             Console.CursorLeft = point.X;
@@ -45,23 +49,19 @@ namespace ColorConsole
         /// </summary>
         /// <param name="point">Your point</param>
         /// <returns>Point2D</returns>
-        public static Point2D VerifyLine(Point2D point)
+        public static Point2D VerifyLine(Point2D point, int amount)
         {
+            var sum = point.Y + amount;
             var limit = Console.WindowHeight;
 
-            if (point.Y == limit)
+            if (sum >= limit)
             {
-                Console.WriteLine();
-                point.DecreaseTop();
-            }
-            else if (point.Y > limit)
-            {
-                var offset = point.Y - limit;
+                var offset = sum - limit;
 
                 for (int i = 0; i < offset; i++)
                     Console.WriteLine();
 
-                point.Y = limit - offset;
+                point.Y -= offset;
             }
 
             return point;
