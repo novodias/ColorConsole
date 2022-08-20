@@ -60,6 +60,15 @@ namespace ColorConsole
             return new(x, y);
         }
 
+        public void DecreaseTop() => this.Y--;
+        
+        public void DecreaseLeft() => this.X--;
+
+        public void IncreaseTop() => this.Y++;
+        
+        public void IncreaseLeft() => this.X++;
+
+
         public override bool Equals(object? obj)
         {
             return obj is Point2D d &&

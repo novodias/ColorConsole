@@ -2,9 +2,12 @@
 using ColorConsole.Progress;
 using ColorConsole.Extensions;
 
+CConsole.SetErrorEmpty("[c blue, white]ERROR EMPTY;C");
+
 string[] options =
 {
     "Test",
+    "Test Context",
     "Progress Test",
     "Progress Chrome Download Test",
     "List Progress",
@@ -24,19 +27,22 @@ while (!exit)
             Test();
             break;
         case 2:
-            ProgressTest();
+            TestContext();
             break;
         case 3:
-            await ProgressChromeTest();
+            ProgressTest();
             break;
         case 4:
-            ListProgressTest();
+            await ProgressChromeTest();
             break;
         case 5:
+            ListProgressTest();
+            break;
+        case 6:
             for (int i = 0; i < Console.WindowHeight; i++)
                 Console.Write(Environment.NewLine);
             break;
-        case 6:
+        case 7:
             exit = true;
             break;
     }
@@ -68,7 +74,7 @@ static void Test()
     CConsole.WriteLine(read);
     Console.WriteLine();
 
-    read = CConsole.Read("READ TEST SAMELINE ERROR: ", true, "TEXT IS EMPTY");
+    read = CConsole.Read("READ TEST SAMELINE ERROR: ", true);
     CConsole.WriteLine(read);
 
     Console.WriteLine();
@@ -112,6 +118,19 @@ static void Test()
 
     readNumberBetween = CConsole.ReadNumber("READNUMBER BETWEEN TEST SAMELINE (1, 10): ", between, true);
     CConsole.WriteLine(readNumberBetween.ToString());
+    Console.WriteLine();
+}
+
+static void TestContext()
+{
+    const string error = "[c white, red]ERROR;C";
+
+    var readNumber = CConsole.ReadNumber<int>("CONTEXT IN - SAMELINE FALSE TEST: ", false, error);
+    CConsole.WriteLine(readNumber.ToString());
+    Console.WriteLine();
+
+    readNumber = CConsole.ReadNumber<int>("CONTEXT IN - SAMELINE TRUE TEST: ", true, error);
+    CConsole.WriteLine(readNumber.ToString());
     Console.WriteLine();
 }
 

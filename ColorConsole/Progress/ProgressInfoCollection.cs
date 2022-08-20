@@ -24,7 +24,7 @@ public class ProgressInfoCollection
 
     public ProgressInfoCollection(int capacity)
     {
-        _cursor = CConsole.SetUpCursor(capacity);
+        _cursor = CConsole.GetLine(capacity);
         _listProgress = new List<ProgressInfo>(capacity);
     }
 

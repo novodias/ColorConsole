@@ -66,7 +66,7 @@ internal class Selection<T>
         var count = listValueInfo.Count;
         var lineCount = count > linesPerPage ? linesPerPage : count;
 
-        var cursor = CConsole.SetUpCursor(lineCount);
+        var cursor = CConsole.GetLine(lineCount);
 
         // var cursorTop = Console.CursorTop;
 

@@ -4,14 +4,14 @@ namespace ColorConsole
 {
     public static partial class CConsole
     {
-        public static string Read(string message, bool sameline = false, string? errorempty = null)
+        public static string Read(string message, bool sameline = false)
         {
-            return In.Read(message, sameline, errorempty).Trim();
+            return In.Read(message, sameline).Trim();
         }
 
-        public static string Read(string message, Func<string, bool> condition, string error, bool sameline = false, string? errorempty = null)
+        public static string ReadCondition(string message, Func<string, bool> condition, string error, bool sameline = false)
         {
-            return In.Read(message, condition, error, sameline, errorempty);
+            return In.Read(message, condition, error, sameline);
         }
 
         public static T ReadNumber<T>(string message, bool sameline = false, string? error = null) where T : notnull
@@ -19,42 +19,72 @@ namespace ColorConsole
             return In.ReadNumber<T>(message, sameline, error);
         }
 
-        public static T ReadNumber<T>(string message, IEnumerable<T> range, bool sameline = false, string? errormessage = null) where T : notnull
+        public static T ReadNumber<T>(
+            string message,
+            IEnumerable<T> range,
+            bool sameline = false,
+            string? error = null) where T : notnull
         {
-            var parsed = default(T);
-            bool any = false;
+            var result = default(T);
+            var any = false;
+            var parsed = false;
+            var context = new ContextIn(message, sameline, error);
+            // var cursor = GetLine();
+            // In.Show(message, sameline);
 
-            while (!any && parsed is not null)
+            context.ShowText();
+
+            while (!any && !parsed)
             {
-                parsed = ReadNumber<T>(message, sameline);
-                any = range.Contains(parsed);
+                parsed = In.TryReadNumber(context, out result);
 
-                if (!any && errormessage is not null)
-                    WriteLine(errormessage);
+                if (parsed)
+                    any = range.Any(n => n.Equals(result));
+
+                if (!any)
+                {
+                    context.ShowText(true);
+                }
             }
 
-            _ = parsed ?? throw new NullReferenceException(nameof(parsed));
+            _ = result ?? throw new NullReferenceException(nameof(parsed));
 
-            return parsed;
+            return result;
         }
 
-        public static T ReadNumber<T>(string message, (T min, T max) between, bool sameline = false) where T : notnull
+        public static T ReadNumber<T>(
+            string message,
+            (T min, T max) between,
+            bool sameline = false, 
+            string? error = null) where T : notnull
         {
-            var parsed = default(T);
-            bool any = false;
+            var result = default(T);
+            var parsed = false;
+            var any = false;
+            var context = new ContextIn(message, sameline, error);
 
-            while (!any && parsed is not null)
+            // var cursor = CConsole.GetLines(1).First();
+
+            context.ShowText();
+            while (!any && !parsed)
             {
-                parsed = ReadNumber<T>(message, sameline);
+                parsed = In.TryReadNumber(context, out result);
 
-                if ( (dynamic)parsed >= (dynamic)between.min &&
-                     (dynamic)parsed <= (dynamic)between.max )
-                    any = true;
+                if (result is not null)
+                {
+                    if ( (dynamic)result >= (dynamic)between.min &&
+                        (dynamic)result <= (dynamic)between.max )
+                    {
+                        any = true;
+                    }
+                    else
+                        context.ShowText(true);
+                }
             }
 
-            _ = parsed ?? throw new NullReferenceException(nameof(parsed));
+            _ = result ?? throw new NullReferenceException(nameof(parsed));
 
-            return parsed;
+            return result;
         }
     }
 }

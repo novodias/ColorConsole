@@ -21,13 +21,13 @@ public class ProgressInfo
 
     public ProgressInfo(long length)
     {
-        this.Position = CConsole.SetUpCursor(1);
+        this.Position = CConsole.GetLine();
         this.FullLength = length;
     }
 
     public ProgressInfo(long length, string text)
     {
-        this.Position = CConsole.SetUpCursor(1);
+        this.Position = CConsole.GetLine();
         this.FullLength = length;
         this.Text = text;
     }
