@@ -1,5 +1,7 @@
 # ColorConsole
 
+[![NuGet](https://img.shields.io/badge/NuGet-ColorConsole-blue)](https://www.nuget.org/packages/Novodias.ColorConsole)
+
 ## How it works:
 
 ### Print text and background with color
