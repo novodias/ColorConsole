@@ -23,7 +23,11 @@ public static class StringExtension
                 end += end;
                 
                 if ( end > text.Length )
+                {
+                    var end2 = end;
                     end -= text.Length;
+                    end = end2 + end;
+                }
             }
 
             var lText = lines.Last();
