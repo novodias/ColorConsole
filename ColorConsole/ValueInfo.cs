@@ -2,8 +2,8 @@ namespace ColorConsole
 {
     internal readonly struct ValueInfo<T>
     {
-        public T Value { get; init; }
-        public string Information { get; init; }
-        public int Number { get; init; }
+        public readonly T Value { get; init; }
+        public readonly string Information { get; init; }
+        public readonly int Number { get; init; }
     }
 }
