@@ -20,71 +20,65 @@ namespace ColorConsole
         }
 
         public static T ReadNumber<T>(
-            string message,
-            IEnumerable<T> range,
-            bool sameline = false,
-            string? error = null) where T : notnull
+            string message, IEnumerable<T> range, bool sameline = false, string? error = null) where T : notnull
         {
-            var result = default(T);
-            var any = false;
-            var parsed = false;
-            var context = new ContextIn(message, sameline, error);
-            // var cursor = GetLine();
-            // In.Show(message, sameline);
+            return In.ReadNumber(message, range, sameline, error);
 
-            context.ShowText();
+            // var result = default(T);
+            // var any = false;
+            // var parsed = false;
+            // var context = new ContextIn(message, sameline, error);
 
-            while (!any && !parsed)
-            {
-                parsed = In.TryReadNumber(context, out result);
+            // context.ShowText();
 
-                if (parsed)
-                    any = range.Any(n => n.Equals(result));
+            // while (!any && !parsed)
+            // {
+            //     parsed = In.TryReadNumber(context, out result);
 
-                if (!any)
-                {
-                    context.ShowText(true);
-                }
-            }
+            //     if (parsed)
+            //         any = range.Any(n => n.Equals(result));
 
-            _ = result ?? throw new NullReferenceException(nameof(parsed));
+            //     if (any == false)
+            //     {
+            //         context.ShowText(true);
+            //     }
+            // }
 
-            return result;
+            // _ = result ?? throw new NullReferenceException(nameof(parsed));
+
+            // return result;
         }
 
         public static T ReadNumber<T>(
-            string message,
-            (T min, T max) between,
-            bool sameline = false, 
-            string? error = null) where T : notnull
+            string message, (T min, T max) between, bool sameline = false, string? error = null) where T : notnull
         {
-            var result = default(T);
-            var parsed = false;
-            var any = false;
-            var context = new ContextIn(message, sameline, error);
+            return In.ReadNumber(message, between, sameline, error);
 
-            // var cursor = CConsole.GetLines(1).First();
+            // var result = default(T);
+            // var parsed = false;
+            // var any = false;
+            // var context = new ContextIn(message, sameline, error);
 
-            context.ShowText();
-            while (!any && !parsed)
-            {
-                parsed = In.TryReadNumber(context, out result);
+            // context.ShowText();
+            // while (!any && !parsed)
+            // {
+            //     parsed = In.TryReadNumber(context, out result);
 
-                if (result is not null)
-                {
-                    if ( (dynamic)result >= (dynamic)between.min &&
-                        (dynamic)result <= (dynamic)between.max )
-                    {
-                        any = true;
-                    }
-                    else
-                        context.ShowText(true);
-                }
-            }
+            //     if (result is not null)
+            //     {
+            //         if ( (dynamic)result >= (dynamic)between.min &&
+            //             (dynamic)result <= (dynamic)between.max )
+            //         {
+            //             any = true;
+            //         }
+            //         else
+            //             context.ShowText(true);
+            //     }
+            // }
 
-            _ = result ?? throw new NullReferenceException(nameof(parsed));
+            // _ = result ?? throw new NullReferenceException(nameof(parsed));
 
-            return result;
+            // return result;
         }
     }
 }

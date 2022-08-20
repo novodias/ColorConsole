@@ -6,14 +6,8 @@ internal static class In
     private static string? _errorEmpty = null;
     internal static string ErrorEmpty
     {
-        get
-        {
-            return _errorEmpty is null ? "Error" : _errorEmpty;
-        }
-        set 
-        {
-            _errorEmpty = value;
-        } 
+        get => _errorEmpty is null ? "Error" : _errorEmpty;
+        set => _errorEmpty = value;
     }
 
     private static bool TryRead(out string text)
@@ -32,14 +26,29 @@ internal static class In
         return text != string.Empty;
     }
 
+    private static bool TryReadNumber<T>(ContextIn ctx, out T? number)
+    {
+        bool tRead = TryRead(out string text);
+        
+        if (tRead)
+        {
+            var tNum = Input.InternalTryParse(text, out number);
+            return tRead && tNum;
+        }
+        else
+            ctx.ShowText(true, ErrorEmpty);
+        
+
+        number = default;
+        return tRead;
+    }
+
     internal static string Read(string message, bool sameline = false)
     {
         string? result = default;
         bool resume = false;
         var context = new ContextIn(message, sameline);
 
-        // var cursor = CConsole.GetLine();
-        // Show(message, sameline);
         context.ShowText();
 
         while (!resume)
@@ -57,9 +66,6 @@ internal static class In
         string? result = default;
         bool resume = false;
         var context = new ContextIn(message, sameline, conditionerror);
-
-        // var cursor = CConsole.GetLine();
-        // Show(message, sameline);
 
         context.ShowText();
 
@@ -98,11 +104,6 @@ internal static class In
                 else
                     context.ShowText(true);
             }
-
-            // if (parsed == false)
-            // {
-            //     context.ShowText(true);
-            // }
         }
 
         _ = number ?? throw new NullReferenceException(nameof(number));
@@ -110,33 +111,66 @@ internal static class In
         return number;
     }
 
-    internal static bool TryReadNumber<T>(out T? number)
+    internal static T ReadNumber<T>(
+        string message,
+        IEnumerable<T> range,
+        bool sameline = false,
+        string? error = null) where T : notnull
     {
-        bool tRead = TryRead(out string text);
-        
-        if (tRead)
+        var result = default(T);
+        var any = false;
+        var parsed = false;
+        var context = new ContextIn(message, sameline, error);
+
+        context.ShowText();
+
+        while (!any || !parsed)
         {
-            var tNum = Input.InternalTryParse(text, out number);
-            return tRead && tNum;
+            parsed = TryReadNumber(context, out result);
+
+            if (parsed)
+            {
+                any = range.Any(n => n.Equals(result));
+
+                if (any == false)
+                    context.ShowText(true);
+            }
+
         }
 
-        number = default;
-        return tRead;
+        _ = result ?? throw new NullReferenceException(nameof(parsed));
+
+        return result;
     }
 
-    internal static bool TryReadNumber<T>(ContextIn ctx, out T? number)
+    internal static T ReadNumber<T>(
+        string message,
+        (T min, T max) between,
+        bool sameline = false, 
+        string? error = null) where T : notnull
     {
-        bool tRead = TryRead(out string text);
-        
-        if (tRead)
-        {
-            var tNum = Input.InternalTryParse(text, out number);
-            return tRead && tNum;
-        }
-        
-        ctx.ShowText(true, ErrorEmpty);
+        var result = default(T);
+        var parsed = false;
+        var any = false;
+        var context = new ContextIn(message, sameline, error);
 
-        number = default;
-        return tRead;
+        context.ShowText();
+        while (!any || !parsed)
+        {
+            parsed = TryReadNumber(context, out result);
+
+            if (parsed && result is not null)
+            {
+                if ( (dynamic)result >= (dynamic)between.min &&
+                    (dynamic)result <= (dynamic)between.max )
+                    any = true;
+                else
+                    context.ShowText(true);
+            }
+        }
+
+        _ = result ?? throw new NullReferenceException(nameof(parsed));
+
+        return result;
     }
 }
