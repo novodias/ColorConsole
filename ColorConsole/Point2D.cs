@@ -1,20 +1,20 @@
 namespace ColorConsole
 {
-    public struct Point2D
+    public class Point2D
     {
         public int X { get; set; }
         public int Y { get; set; }
 
         public Point2D(int x, int y)
         {
-          X = x; 
-          Y = y;  
+            X = x; 
+            Y = y;  
         }
 
         public Point2D((int x, int y) tuple)
         {
-          X = tuple.x; 
-          Y = tuple.y;  
+            X = tuple.x; 
+            Y = tuple.y;  
         }
 
         public static implicit operator Point2D((int x, int y) tuple)
@@ -24,7 +24,7 @@ namespace ColorConsole
             => left.X == right.X && left.Y == right.Y;
 
         public static bool operator !=(Point2D left, Point2D right)
-            => left.X != right.X && left.Y != right.Y;
+            => left.X != right.X || left.Y != right.Y;
 
         public static Point2D operator ++(Point2D p)
             => new(p.X + 1, p.Y + 1);
